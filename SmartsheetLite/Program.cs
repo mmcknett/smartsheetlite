@@ -10,15 +10,18 @@ namespace SmartsheetLite
     {
         static void Main(string[] args)
         {
-            Row uWOpen = new Row("UW Open", 11.94f, 10.96f);
-            Row lastChance = new Row("Multnomah Last Chance", 12.34f, 10.76f);
-            Row wUInvite = new Row("WU Invite", 13f, 11.32f);
-            Row wAOR = new Row("WAOR Meet", 14.23f, 12.32f);
+            Row[] sheet = new Row[]
+            {
+                new Row("UW Open", 11.94f, 10.96f),
+                new Row("Multnomah Last Chance", 12.34f, 10.76f),
+                new Row("WU Invite", 13f, 11.32f),
+                new Row("WAOR Meet", 14.23f, 12.32f)
+            };
 
-            uWOpen.print();
-            lastChance.print();
-            wUInvite.print();
-            wAOR.print();
+            for(int i = 0; sheet.Length > i; ++i)
+            {
+                sheet[i].print();
+            }                  
 
             Console.ReadKey();
         }
