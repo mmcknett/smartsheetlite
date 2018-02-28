@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace SmartsheetLite
 {
-    class Program
+    public class Program
     {
         const uint CAPACITY = 10;
 
         static Row[] sheet;
         static uint top = 0;
 
-        enum Command {
+        public enum Command {
             Insert,
             Display,
             Quit,
@@ -21,7 +21,7 @@ namespace SmartsheetLite
             None
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             sheet = new Row[CAPACITY];
 
@@ -31,7 +31,7 @@ namespace SmartsheetLite
             Insert(new Row("WU Invite", 13f, 11.32f));
             Insert(new Row("WAOR Meet", 14.23f, 12.32f));
 
-            Command lastCommand = Command.Display;
+            Command lastCommand = Command.None;
             while (lastCommand != Command.Quit)
             {
                 // Handle the last command.
@@ -69,7 +69,7 @@ namespace SmartsheetLite
             Console.WriteLine();
         }
 
-        static Command GetCommand()
+        public static Command GetCommand()
         {
             Console.Write("Enter command ('h' or 'help' to list commands): ");
             string input = Console.ReadLine();
