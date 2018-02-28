@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace SmartsheetLite
 {
-    class Program
+    public class Program
     {
         const uint CAPACITY = 10;
 
-        static Row[] sheet;
-        static uint top = 0;
+        static Sheet sheet;
 
-        enum Command {
+        public enum Command {
             Insert,
             Display,
             Quit,
@@ -21,17 +20,17 @@ namespace SmartsheetLite
             None
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            sheet = new Row[CAPACITY];
+            sheet = new Sheet(CAPACITY);
 
             // Add some initial data.
-            Insert(new Row("UW Open", 11.94f, 10.96f));
-            Insert(new Row("Multnomah Last Chance", 12.34f, 10.76f));
-            Insert(new Row("WU Invite", 13f, 11.32f));
-            Insert(new Row("WAOR Meet", 14.23f, 12.32f));
+            sheet.Insert(new Row("UW Open", 11.94f, 10.96f));
+            sheet.Insert(new Row("Multnomah Last Chance", 12.34f, 10.76f));
+            sheet.Insert(new Row("WU Invite", 13f, 11.32f));
+            sheet.Insert(new Row("WAOR Meet", 14.23f, 12.32f));
 
-            Command lastCommand = Command.Display;
+            Command lastCommand = Command.None;
             while (lastCommand != Command.Quit)
             {
                 // Handle the last command.
@@ -69,7 +68,7 @@ namespace SmartsheetLite
             Console.WriteLine();
         }
 
-        static Command GetCommand()
+        public static Command GetCommand()
         {
             Console.Write("Enter command ('h' or 'help' to list commands): ");
             string input = Console.ReadLine();
@@ -99,21 +98,56 @@ namespace SmartsheetLite
 
         static void PrintSheet()
         {
-            for(int i = 0; i < top; ++i)
+            for(uint i = 0; i < sheet.RowCount(); ++i)
             {
-                sheet[i].print();
+                sheet.GetRow(i).print();
             }
             Console.WriteLine();
         }
+    }
 
-        static void Insert(Row row)
+    public class Sheet
+    {
+        Row[] sheet;
+        uint top = 0;
+
+        public Sheet(uint rowCapacity)
         {
-            sheet[top] = row;
-            ++top;
+            this.sheet = new Row[rowCapacity];
+        }
+
+        public uint RowCount()
+        {
+            return top;
+        }
+
+        public uint RowCapacity()
+        {
+            return (uint)sheet.Length;
+        }
+
+        public void Insert(Row row)
+        {
+            if (top >= sheet.Length)
+            {
+                throw new OutOfMemoryException();
+            }
+
+            sheet[top++] = row;
+        }
+
+        public Row GetRow(uint i)
+        {
+            if (i >= top)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
+            return sheet[i];
         }
     }
 
-    class Row
+    public class Row
     {
         string meetName;
         float weighThrow;
